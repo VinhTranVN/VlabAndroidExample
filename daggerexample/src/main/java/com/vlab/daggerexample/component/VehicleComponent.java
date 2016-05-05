@@ -1,7 +1,7 @@
 package com.vlab.daggerexample.component;
 
-import com.vlab.daggerexample.model.Vehicle;
 import com.vlab.daggerexample.module.VehicleModule;
+import com.vlab.daggerexample.ui.activities.MainActivity;
 
 import javax.inject.Singleton;
 
@@ -13,7 +13,6 @@ import dagger.Component;
 @Singleton
 @Component(modules = {VehicleModule.class})
 public interface VehicleComponent {
-
-    Vehicle provideVehicle();
-
+    void inject(MainActivity activity);
+//    Vehicle provideVehicle();
 }

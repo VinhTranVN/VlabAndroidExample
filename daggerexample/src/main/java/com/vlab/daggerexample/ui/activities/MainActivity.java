@@ -8,22 +8,25 @@ import com.vlab.daggerexample.R;
 import com.vlab.daggerexample.component.DaggerVehicleComponent;
 import com.vlab.daggerexample.component.VehicleComponent;
 import com.vlab.daggerexample.model.Vehicle;
-import com.vlab.daggerexample.module.VehicleModule;
+
+import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Vehicle mVehicle;
+    @Inject
+    protected Vehicle mVehicle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        VehicleComponent component = DaggerVehicleComponent.builder().vehicleModule(new VehicleModule()).build();
+        VehicleComponent component = DaggerVehicleComponent.builder().build();
+        component.inject(this);
 
-        mVehicle = component.provideVehicle();
         mVehicle.increaseSpeed(10);
 
         Toast.makeText(this, String.valueOf(mVehicle.getSpeed()), Toast.LENGTH_SHORT).show();
     }
+
 }

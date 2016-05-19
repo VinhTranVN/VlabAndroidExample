@@ -1,1 +1,2 @@
-include ':app', ':daggerexample', ':commonlibrary'
+include ':app', ':app_dagger', ':app_rx_android'
+include 'libs:commonlibrary'

@@ -1,7 +1,7 @@
 package com.vlab.androidexample.activities;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -11,7 +11,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.vlab.androidexample.R;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
 
@@ -42,6 +42,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Add a marker in Sydney and move the camera
         LatLng hcmCity = new LatLng(10.823208, 106.627345);
         mMap.addMarker(new MarkerOptions().position(hcmCity).title("Marker in Ho Chi Minh City"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(hcmCity));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hcmCity, 16));
     }
 }

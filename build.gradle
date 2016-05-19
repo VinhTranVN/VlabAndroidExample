@@ -12,6 +12,8 @@ buildscript {
 
         // other classpath definitions here
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        // lambda syntax
+        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
     }
 }
 

@@ -13,6 +13,7 @@ public class RxOperators {
 
     private static String TAG = "RxOperators";
     private static final List<String> MAP_URLS = new ArrayList<>();
+
     static {
         MAP_URLS.add("www.Hello1.com/title_1");
         MAP_URLS.add("www.World2.com/title_2");
@@ -68,9 +69,12 @@ public class RxOperators {
                 );
     }
 
-    /** Returns a List of website URLs based on a text search */
+    /**
+     * Returns a List of website URLs based on a text search
+     */
     private static Observable<List<String>> query(String text) {
-        return Observable
+
+        /*Observable<List<String>> listObservable = Observable
                 .just(MAP_URLS)
                 .map(urls -> {
                     List<String> urlsContainText = new ArrayList<String>();
@@ -80,7 +84,12 @@ public class RxOperators {
                         }
                     }
                     return urlsContainText;
-                });
+                });*/
+
+        return Observable
+                .from(MAP_URLS)
+                .filter(url -> url.contains(text))
+                .toList();
     }
 
     private static Observable<String> getTitle(String url) {

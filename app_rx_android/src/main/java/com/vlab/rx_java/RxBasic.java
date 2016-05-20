@@ -10,6 +10,8 @@ import rx.functions.Func1;
  * Basic concept:
  * - Observable emits items
  * - Subscriber consumes those items
+ *
+ * refer : http://blog.danlew.net/2014/09/15/grokking-rxjava-part-1/
  */
 public class RxBasic {
 
@@ -55,28 +57,20 @@ public class RxBasic {
             @Override
             public void call(Subscriber<? super String> subscriber) {
 
-                subscriber.onNext(TAG + " >>> onNext ");
+                subscriber.onNext(TAG + " >>> onNext " );
                 subscriber.onNext(TAG + " >>> onNext 1");
                 subscriber.onNext(TAG + " >>> onNext 2");
 
-                String nullString = null;
+                //String nullString = null;
                 //System.out.println(TAG + " >>> make an null pointer error ");
                 //System.out.println(nullString.toString());
-
                 subscriber.onCompleted();
-                //subscriber.onNext(TAG + " >>> not call after complete onNext 3");
             }
         });
         stringObservable.subscribe(firstSubscriber);
 
-
-        System.out.println(TAG + " >>> main : firstSubscriber.isUnsubscribed() "+ firstSubscriber.isUnsubscribed());
-        /*firstSubscriber.onNext(" next event ");
-        stringObservable.subscribe();*/
-
-
         //-------------------- map operator
-        System.out.println("--------------------");
+        System.out.println("-------------------- map operator ");
         Observable<String> observable1 = Observable.just("Hello ");
         observable1.map(new Func1<String, String>() {
                     @Override
@@ -93,7 +87,7 @@ public class RxBasic {
         ;
 
         //-------------------- map operator : transform string data to integer before emit data ro subscriber
-        System.out.println("--------------------");
+        System.out.println("-------------------- map operator : transform string data to integer before emit data ro subscriber");
         Observable<String> observable2 = Observable.just("12345");
         observable2.doOnNext(str -> System.out.println("string is " + str))
                     .map(str -> str.length())

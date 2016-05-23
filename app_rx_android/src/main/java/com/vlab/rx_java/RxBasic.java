@@ -50,6 +50,7 @@ public class RxBasic {
             System.out.println(TAG + " secondSubscriber onNext  : " + integer);
         }
     };
+    private static String textDemo;
 
     public static void main(String[] args) {
         ////////////////////////////////////
@@ -94,5 +95,31 @@ public class RxBasic {
                     .subscribe(secondSubscriber);
 
 
+        //-------------------- use defer when create observer for long task called before create Observer
+        Observable<String> stringObservable1 = testJustMethod();
+        /*stringObservable1
+                .doOnNext(s -> System.out.println(TAG + " stringObservable1 >>> subscribe "))
+                .subscribe(s -> System.out.println(TAG + " >>> stringObservable1 : "));*/
+
+        Observable<String> stringObservable2 = testDeferMethod();
+        /*stringObservable2
+                .doOnNext(s -> System.out.println(TAG + " stringObservable2 >>> subscribe "))
+                .subscribe(s -> System.out.println(TAG + " >>> stringObservable2 : "));*/
+
+    }
+
+    private static Observable<String> testJustMethod() {
+        System.out.println("-------------------- Test Just");
+        return Observable.just(getLongTask());
+    }
+
+    private static Observable<String> testDeferMethod() {
+        System.out.println("-------------------- Test Defer");
+        return Observable.defer(() -> Observable.just(getLongTask()));
+    }
+
+    public static String getLongTask() {
+        System.out.println(TAG + " >>> call getLongTask to return a string ");
+        return textDemo;
     }
 }

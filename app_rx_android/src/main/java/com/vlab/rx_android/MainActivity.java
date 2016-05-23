@@ -3,8 +3,6 @@ package com.vlab.rx_android;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.vlab.rxandroidexample.R;
-
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";

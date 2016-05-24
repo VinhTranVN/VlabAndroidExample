@@ -4,6 +4,7 @@ import rx.Subscriber;
 import rx.functions.Action1;
 import rx.subjects.BehaviorSubject;
 import rx.subjects.PublishSubject;
+import rx.subjects.ReplaySubject;
 
 /**
  * Created by Vinh.Tran on 5/23/16.
@@ -15,11 +16,49 @@ public class RxSubjects {
     private static Action1<String> subscriber1 = s -> System.out.println(" >>> testPublicSubject subscriber 1 : " + s);
     private static Action1<String> subscriber2 = s -> System.out.println(" >>> testPublicSubject subscriber 2 : " + s);
 
+    private static Subscriber<String> replaySubject1 = new Subscriber<String>() {
+        @Override
+        public void onCompleted() {
+            System.out.println(TAG + " >>> replaySubject1 onCompleted : ");
+        }
+
+        @Override
+        public void onError(Throwable e) {
+
+        }
+
+        @Override
+        public void onNext(String s) {
+            System.out.println(TAG + " >>> replaySubject1 onNext : " + s);
+        }
+    };
+
+    private static Subscriber<String> replaySubject2 = new Subscriber<String>() {
+        @Override
+        public void onCompleted() {
+            System.out.println(TAG + " >>> replaySubject2 onCompleted : ");
+        }
+
+        @Override
+        public void onError(Throwable e) {
+
+        }
+
+        @Override
+        public void onNext(String s) {
+            System.out.println(TAG + " >>> replaySubject2 onNext : " + s);
+        }
+    };
+
     public static void main(String[] args) {
-        testPublicSubject();
+        //testPublicSubject();
         //testBehaviorSubject();
+        testReplaySubject();
     }
 
+    /**
+     * http://reactivex.io/RxJava/javadoc/rx/subjects/PublishSubject.html
+     */
     private static void testPublicSubject() {
         PublishSubject<String> subject = PublishSubject.create();
         // observer1 will receive all onNext and onCompleted events
@@ -132,6 +171,21 @@ public class RxSubjects {
                 System.out.println(" >>> subject3 onNext : " + s);
             }
         });
+    }
+
+
+    private static void testReplaySubject(){
+        ReplaySubject<String> subject = ReplaySubject.create();
+        subject.subscribe(replaySubject1);
+        subject.onNext("one");
+        subject.onNext("two");
+        subject.subscribe(replaySubject2);
+        subject.onNext("three");
+        subject.onCompleted();
+
+        // both of the following will get the onNext/onCompleted calls from above
+//        subject.subscribe(replaySubject1);
+//        subject.subscribe(replaySubject2);
     }
 
 }

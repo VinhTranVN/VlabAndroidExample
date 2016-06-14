@@ -1,5 +1,8 @@
 package com.vlab.rx_java;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action1;
@@ -53,6 +56,23 @@ public class RxBasic {
     private static String textDemo;
 
     public static void main(String[] args) {
+        CountDownLatch latch = new CountDownLatch(100);
+        Observable<Long> hot = Observable.interval(1, TimeUnit.SECONDS).share();
+        hot.subscribe(i -> System.out.println("Subscriber 1: " + i));
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        hot.subscribe(i -> System.out.println("Subscriber 2: " + i));
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
         ////////////////////////////////////
         Observable<String> stringObservable = Observable.create(new Observable.OnSubscribe<String>() {
             @Override

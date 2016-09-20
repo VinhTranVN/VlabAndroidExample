@@ -1,0 +1,4 @@
+<resources>
+    <!-- Test fb app id -->
+    <string name="facebook_app_id">348647438537277</string>
+</resources>

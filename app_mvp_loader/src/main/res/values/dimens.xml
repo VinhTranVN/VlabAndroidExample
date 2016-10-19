@@ -1,0 +1,8 @@
+<resources>
+    <!-- common dimens -->
+    <dimen name="xlarge_size">40dp</dimen>
+    <dimen name="large_size">20dp</dimen>
+    <dimen name="medium_size">10dp</dimen>
+    <dimen name="small_size">5dp</dimen>
+
+</resources>

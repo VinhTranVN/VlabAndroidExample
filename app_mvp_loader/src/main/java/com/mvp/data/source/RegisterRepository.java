@@ -13,10 +13,10 @@ public class RegisterRepository implements RegisterDataProvider {
         mDataProvider = dataProvider;
     }
 
-    public static RegisterRepository getInstance(RegisterDataProvider dataSource) {
+    public static RegisterRepository getInstance(RegisterDataProvider dataProvider) {
         if (INSTANCE == null) {
             // inject remote or local data source here
-            INSTANCE = new RegisterRepository(dataSource);
+            INSTANCE = new RegisterRepository(dataProvider);
         }
         return INSTANCE;
     }

@@ -26,3 +26,8 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    VERSION_RETROFIT = "2.1.0"
+    VERSION_OKHTTP = "3.3.0"
+}

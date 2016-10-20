@@ -19,12 +19,17 @@ package com.mvp;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.mvp.data.source.RegisterDataSource;
+import com.mvp.data.RetrofitApiRequestorImpl;
+import com.mvp.data.source.LoginRepository;
 import com.mvp.data.source.RegisterRepository;
+import com.mvp.data.source.remote.LoginRemoteDataProviderImpl;
+import com.mvp.data.source.remote.RegisterRemoteDataProviderImpl;
+
+import static com.mvp.utils.ValidatorUtil.checkNotNull;
 
 /**
  * Enables injection of mock implementations for
- * {@link RegisterDataSource} at compile time. This is useful for testing, since it allows us to use
+ * DataProvider at compile time. This is useful for testing, since it allows us to use
  * a fake instance of the class to isolate the dependencies and run a test hermetically.
  */
 public class Injection {
@@ -32,6 +37,14 @@ public class Injection {
     public static RegisterRepository provideRegisterRepository(@NonNull Context context) {
         checkNotNull(context);
         // determine get data source from server or local
-        return RegisterRepository.getInstance(new RegisterRemoteDataSourceImpl());
+        return RegisterRepository.getInstance(new RegisterRemoteDataProviderImpl());
+    }
+
+    public static LoginRepository provideLoginRepository(@NonNull Context context) {
+        checkNotNull(context);
+        // determine get data source from server or local
+        return LoginRepository.getInstance(
+                new LoginRemoteDataProviderImpl(new RetrofitApiRequestorImpl(context.getResources().getString(R.string.base_url)))
+        );
     }
 }

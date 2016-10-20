@@ -19,9 +19,14 @@ package com.mvp;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.mvp.data.ApiRequestor;
+import com.mvp.data.RetrofitApiRequestorImpl;
+import com.mvp.data.api.GitHubApi;
+import com.mvp.data.source.LoginRepository;
 import com.mvp.data.source.RegisterDataProvider;
 import com.mvp.data.source.RegisterRepository;
 import com.mvp.data.source.dummy.RegisterDummyDataProviderImpl;
+import com.mvp.data.source.remote.LoginRemoteDataProviderImpl;
 
 import static com.mvp.utils.ValidatorUtil.checkNotNull;
 
@@ -37,4 +42,18 @@ public class Injection {
         // determine get data source from server or local
         return RegisterRepository.getInstance(new RegisterDummyDataProviderImpl());
     }
+
+    public static LoginRepository provideLoginRepository(@NonNull Context context) {
+        checkNotNull(context);
+        // determine get data source from server or local
+        return LoginRepository.getInstance(
+                new LoginRemoteDataProviderImpl(getApiRequestor(context).createApiRequest(GitHubApi.class))
+        );
+    }
+
+    private static ApiRequestor getApiRequestor(Context context){
+        // TODO may change api requestor is Retrofit or another 3rd party in the future
+        return RetrofitApiRequestorImpl.getInstance(context);
+    }
+
 }

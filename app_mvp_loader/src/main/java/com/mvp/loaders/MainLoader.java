@@ -14,27 +14,29 @@
  * limitations under the License.
  */
 
-package com.mvp.features.main;
+package com.mvp.loaders;
 
-import com.mvp.BasePresenter;
-import com.mvp.BaseView;
+import android.content.Context;
 
-import java.util.List;
+import com.mvp.AbstractAsyncTaskLoader;
 
-/**
- * This specifies the contract between the view and the presenter.
- */
-public interface MainContract {
+public class MainLoader extends AbstractAsyncTaskLoader<String> {
 
-    interface View extends BaseView<Presenter> {
-        void setLoadingIndicator(boolean active);
-        void initTabs(List<TabInfo> tabList);
-        void showTab(int tabIndex);
-        void showDataResponse(String text);
+    public MainLoader(Context context) {
+        super(context);
+
+        // provide a register repository
     }
 
-    interface Presenter extends BasePresenter {
-        List<TabInfo> getTabs();
-        void loadData();
+    @Override
+    public String loadInBackground() {
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return "Dummy Data from loader";
     }
 }

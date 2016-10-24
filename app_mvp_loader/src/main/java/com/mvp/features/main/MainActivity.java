@@ -1,9 +1,11 @@
 package com.mvp.features.main;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import com.mvp.R;
 import com.mvp.features.common.BaseActivity;
+import com.mvp.loaders.MainLoader;
 import com.mvp.utils.ActivityUtils;
 
 /**
@@ -26,7 +28,13 @@ public class MainActivity extends BaseActivity {
         }
 
         // Create the presenter
-        mPresenter = new MainPresenter(mainFragment);
+        mPresenter = new MainPresenter(mainFragment, getSupportLoaderManager(), new MainLoader(this));
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        System.out.println(">>> MainActivity -> onConfigurationChanged : ");
     }
 }
 

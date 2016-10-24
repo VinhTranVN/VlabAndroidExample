@@ -13,6 +13,7 @@ public abstract class AbstractAsyncTaskLoader<T> extends AsyncTaskLoader<T> {
 
     @Override
     protected void onStartLoading() {
+        System.out.println(">>> AbstractAsyncTaskLoader -> onStartLoading : mResult = " + mResult);
         if (mResult != null) {
             // If we currently have a result available, deliver it
             // immediately.
@@ -28,6 +29,7 @@ public abstract class AbstractAsyncTaskLoader<T> extends AsyncTaskLoader<T> {
 
     @Override
     protected void onStopLoading() {
+        System.out.println(">>> AbstractAsyncTaskLoader -> onStopLoading");
         // Attempt to cancel the current load task if possible.
         cancelLoad();
     }
@@ -44,6 +46,7 @@ public abstract class AbstractAsyncTaskLoader<T> extends AsyncTaskLoader<T> {
     @Override
     protected void onReset() {
         super.onReset();
+        System.out.println(">>> AbstractAsyncTaskLoader -> onReset : ");
 
         onStopLoading();
 
@@ -55,6 +58,7 @@ public abstract class AbstractAsyncTaskLoader<T> extends AsyncTaskLoader<T> {
 
     @Override
     public void deliverResult(T data) {
+        System.out.println(">>> AbstractAsyncTaskLoader -> deliverResult data = " + data);
         if (isReset()) {
             // An async query came in while the loader is stopped. We
             // don't need the result.

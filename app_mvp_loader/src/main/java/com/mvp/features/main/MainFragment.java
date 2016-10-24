@@ -25,6 +25,7 @@ import static com.mvp.utils.ValidatorUtil.checkNotNull;
 public class MainFragment extends BaseFragment implements MainContract.View {
 
     @BindView(R.id.main_tab_host) FragmentTabHost mTabHost;
+    @BindView(R.id.data_response) TextView mTvDataResponse;
 
     private MainContract.Presenter mPresenter;
 
@@ -45,6 +46,19 @@ public class MainFragment extends BaseFragment implements MainContract.View {
     @Override
     protected void initView(View view) {
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        System.out.println(">>> MainFragment -> onStart");
+        mPresenter.start();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        System.out.println(">>> MainFragment -> onStop ");
     }
 
     @Override
@@ -89,5 +103,10 @@ public class MainFragment extends BaseFragment implements MainContract.View {
     @Override
     public void showTab(int tabIndex) {
         // TODO show tab here
+    }
+
+    @Override
+    public void showDataResponse(String text) {
+        mTvDataResponse.setText(text);
     }
 }

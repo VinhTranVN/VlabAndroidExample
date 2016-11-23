@@ -18,10 +18,8 @@ public class CalendarTest {
 
     @Test
     public void main() {
-        Calendar nowCalendar = Calendar.getInstance();
-        int currentDayOfMonth = nowCalendar.get(Calendar.DAY_OF_MONTH);
         Calendar starCalendar = Calendar.getInstance();
-        //starCalendar.set(Calendar.MONTH, 11);
+        starCalendar.set(Calendar.MONTH, 4);
         starCalendar.set(Calendar.DAY_OF_MONTH, 1);
         int currentMonth = starCalendar.get(Calendar.MONTH);
         System.out.println("currentMonth " + currentMonth);
@@ -33,7 +31,7 @@ public class CalendarTest {
         int startDayOfMonth = starCalendar.get(Calendar.DAY_OF_MONTH);
         System.out.println("DAY_OF_MONTH " + startDayOfMonth);
 
-        int startDay = starCalendar.get(Calendar.DAY_OF_WEEK) - 2;
+        int startDay = starCalendar.get(Calendar.DAY_OF_WEEK) + 5;
         System.out.println("DAY_OF_WEEK " + startDay);
 
         int weekOfMonth = starCalendar.get(Calendar.WEEK_OF_MONTH);
@@ -58,9 +56,28 @@ public class CalendarTest {
             System.out.print(" " + weekdays[i]);
         }
 
-        for (int week = 0; week < actualWeekOfMonth; week++) {
+        for (int week = 0; week < 6; week++) {
             System.out.println("\n-----------------------------");
-            generateDayOfWeek(starCalendar, startDay, week);
+            Calendar nowCal = Calendar.getInstance();
+            int selectMonth = starCalendar.get(Calendar.MONTH);
+            for (int day = 0; day < 7; day++) {
+                // check to start begin of month
+                // first week
+                if (week == 0 && day < startDay) {
+                    System.out.print(String.format(" %2s ", " "));
+                    continue;
+                }
+
+                // check to stop end of month
+                if(selectMonth == starCalendar.get(Calendar.MONTH)){
+                    if(nowCal.get(Calendar.DAY_OF_YEAR) == starCalendar.get(Calendar.DAY_OF_YEAR)){
+                        System.out.print(String.format(" (%2s) " , starCalendar.get(Calendar.DAY_OF_MONTH)));
+                    } else {
+                        System.out.print(String.format(" %2s " , starCalendar.get(Calendar.DAY_OF_MONTH)));
+                    }
+                }
+                starCalendar.add(Calendar.DAY_OF_MONTH, 1);
+            }
         }
 
 
@@ -69,17 +86,18 @@ public class CalendarTest {
     private void generateDayOfWeek(Calendar starCalendar, int startDay, int week) {
 
         Calendar nowCal = Calendar.getInstance();
+        int selectMonth = starCalendar.get(Calendar.MONTH);
         for (int day = 0; day < 7; day++) {
             // check to start begin of month
             // first week
             if (week == 0 && day < startDay) {
-                System.out.print(String.format(" %2s ", ""));
+                System.out.print(String.format(" %2s ", " "));
                 continue;
             }
 
             // check to stop end of month
-            if(nowCal.get(Calendar.MONTH) == starCalendar.get(Calendar.MONTH)){
-                if(nowCal.get(Calendar.DAY_OF_MONTH) == starCalendar.get(Calendar.DAY_OF_MONTH)){
+            if(selectMonth == starCalendar.get(Calendar.MONTH)){
+                if(nowCal.get(Calendar.DAY_OF_YEAR) == starCalendar.get(Calendar.DAY_OF_YEAR)){
                     System.out.print(String.format(" (%2s) " , starCalendar.get(Calendar.DAY_OF_MONTH)));
                 } else {
                     System.out.print(String.format(" %2s " , starCalendar.get(Calendar.DAY_OF_MONTH)));

@@ -2,7 +2,6 @@ package com.vlab.androidexample;
 
 import org.junit.Test;
 
-import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -30,21 +29,18 @@ public class CalendarTest {
 
         System.out.println("getDisplayName DAY_OF_WEEK " + starCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.US));
         System.out.println("DAY_OF_YEAR " + starCalendar.get(Calendar.DAY_OF_YEAR));
+
         int startDayOfMonth = starCalendar.get(Calendar.DAY_OF_MONTH);
         System.out.println("DAY_OF_MONTH " + startDayOfMonth);
 
-        int dayOfWeek = starCalendar.get(Calendar.DAY_OF_WEEK) - 2;
-        System.out.println("DAY_OF_WEEK " + dayOfWeek);
+        int startDay = starCalendar.get(Calendar.DAY_OF_WEEK) - 2;
+        System.out.println("DAY_OF_WEEK " + startDay);
 
         int weekOfMonth = starCalendar.get(Calendar.WEEK_OF_MONTH);
         int actualWeekOfMonth = starCalendar.getActualMaximum(Calendar.WEEK_OF_MONTH);
         System.out.println("WEEK_OF_MONTH " + weekOfMonth);
         System.out.println("actualWeekOfMonth " + actualWeekOfMonth);
 
-
-        System.out.println("WEEK_OF_YEAR " + starCalendar.get(Calendar.WEEK_OF_YEAR));
-
-        System.out.println("getMinimalDaysInFirstWeek " + starCalendar.getMinimalDaysInFirstWeek());
 
         String[] weekdays = {"Mon", "Tue" , "Wed", "Thu", "Fri", "Sat", "Sun"};
         int[] weekdayValues = {
@@ -62,28 +58,34 @@ public class CalendarTest {
             System.out.print(" " + weekdays[i]);
         }
 
-        for (int j = 0; j < actualWeekOfMonth; j++) {
+        for (int week = 0; week < actualWeekOfMonth; week++) {
             System.out.println("\n-----------------------------");
-            for (int i = 0; i < weekdayValues.length; i++) {
-                // check to start begin of month
-                // first week
-                if (j == 0 && i < dayOfWeek) {
-                    System.out.print(String.format(" %2s ", ""));
-                    continue;
-                }
-
-                // check to stop end of month
-                if(currentMonth == starCalendar.get(Calendar.MONTH)){
-                    if(currentDayOfMonth == starCalendar.get(Calendar.DAY_OF_MONTH)){
-                        System.out.print(String.format(" (%2s) " , starCalendar.get(Calendar.DAY_OF_MONTH)));
-                    } else {
-                        System.out.print(String.format(" %2s " , starCalendar.get(Calendar.DAY_OF_MONTH)));
-                    }
-                }
-                starCalendar.add(Calendar.DAY_OF_MONTH, 1);
-            }
+            generateDayOfWeek(starCalendar, startDay, week);
         }
 
 
+    }
+
+    private void generateDayOfWeek(Calendar starCalendar, int startDay, int week) {
+
+        Calendar nowCal = Calendar.getInstance();
+        for (int day = 0; day < 7; day++) {
+            // check to start begin of month
+            // first week
+            if (week == 0 && day < startDay) {
+                System.out.print(String.format(" %2s ", ""));
+                continue;
+            }
+
+            // check to stop end of month
+            if(nowCal.get(Calendar.MONTH) == starCalendar.get(Calendar.MONTH)){
+                if(nowCal.get(Calendar.DAY_OF_MONTH) == starCalendar.get(Calendar.DAY_OF_MONTH)){
+                    System.out.print(String.format(" (%2s) " , starCalendar.get(Calendar.DAY_OF_MONTH)));
+                } else {
+                    System.out.print(String.format(" %2s " , starCalendar.get(Calendar.DAY_OF_MONTH)));
+                }
+            }
+            starCalendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
     }
 }

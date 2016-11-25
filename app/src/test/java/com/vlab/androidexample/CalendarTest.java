@@ -29,18 +29,15 @@ public class CalendarTest {
 
     @Test
     public void testWeekCalendar() {
-        Calendar starCalendar = Calendar.getInstance();
-        starCalendar.set(Calendar.MONTH, 4);
-        starCalendar.set(Calendar.DAY_OF_MONTH, 1);
-        starCalendar.setFirstDayOfWeek(Calendar.MONDAY);
+        Calendar selectCal = Calendar.getInstance();
+        selectCal.set(Calendar.YEAR, 2016);
+        selectCal.set(Calendar.MONTH, 10);
+        selectCal.set(Calendar.DAY_OF_MONTH, 1);
 
-        System.out.println("getDisplayName DAY_OF_WEEK " + starCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.US));
+        System.out.println("getDisplayName DAY_OF_WEEK " + selectCal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.US));
 
-        int actualWeekOfMonth = starCalendar.getActualMaximum(Calendar.WEEK_OF_MONTH);
+        int actualWeekOfMonth = selectCal.getActualMaximum(Calendar.WEEK_OF_MONTH);
         System.out.println("actualWeekOfMonth " + actualWeekOfMonth);
-
-        Calendar nowCal = Calendar.getInstance();
-        int selectMonth = starCalendar.get(Calendar.MONTH);
 
         // header
         for (int i = 0; i < weekdayValues.length; i++) {
@@ -49,31 +46,43 @@ public class CalendarTest {
 
         for (int week = 1; week <= actualWeekOfMonth; week++) {
             System.out.println("\n-----------------------------");
-            generateWeek(starCalendar, nowCal, selectMonth, week);
+            generateWeek(selectCal, week);
         }
     }
 
-    private void generateWeek(Calendar starCalendar, Calendar nowCal, int selectMonth, int week) {
+    private void generateWeek(Calendar starCalendar, int week) {
+
+        Calendar weekCal = Calendar.getInstance();
+        weekCal.set(Calendar.MONTH, starCalendar.get(Calendar.MONTH));
+        weekCal.set(Calendar.DAY_OF_MONTH, 1); // start day
+        weekCal.setFirstDayOfWeek(Calendar.MONDAY);
+        if(week >  1){
+            weekCal.add(Calendar.WEEK_OF_YEAR, week - 1);
+            weekCal.set(Calendar.DAY_OF_WEEK, weekCal.getFirstDayOfWeek());
+            System.out.println("weekCal.getFirstDayOfWeek() " + weekCal.getTime().toString());
+        }
+
+
         for (int day = 1; day <= 7; day++) {
             // check to start begin of month
             // first week
-            if (week == 1 && weekdayValues[day - 1] != starCalendar.get(Calendar.DAY_OF_WEEK)) {
+            if (week == 1 && weekdayValues[day - 1] != weekCal.get(Calendar.DAY_OF_WEEK)) {
                 System.out.print(String.format(" %2s ", " "));
                 continue;
             }
 
-            if(starCalendar.get(Calendar.MONTH) > selectMonth){
+            if(weekCal.get(Calendar.MONTH) > starCalendar.get(Calendar.MONTH)){
                 break;
             }
 
             // check to stop end of month
-            if (nowCal.get(Calendar.DAY_OF_YEAR) == starCalendar.get(Calendar.DAY_OF_YEAR)) {
-                System.out.print(String.format(" (%2s) ", starCalendar.get(Calendar.DAY_OF_MONTH)));
+            if (Calendar.getInstance().get(Calendar.DAY_OF_YEAR) == starCalendar.get(Calendar.DAY_OF_YEAR)) {
+                System.out.print(String.format(" (%2s) ", weekCal.get(Calendar.DAY_OF_MONTH)));
             } else {
-                System.out.print(String.format(" %2s ", starCalendar.get(Calendar.DAY_OF_MONTH)));
+                System.out.print(String.format(" %2s ", weekCal.get(Calendar.DAY_OF_MONTH)));
             }
             // increase day
-            starCalendar.add(Calendar.DAY_OF_MONTH, 1);
+            weekCal.add(Calendar.DAY_OF_MONTH, 1);
         }
     }
 }

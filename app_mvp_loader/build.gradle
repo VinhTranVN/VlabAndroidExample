@@ -3,7 +3,7 @@ apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    buildToolsVersion BUILD_TOOLS_VERSION
     defaultConfig {
         applicationId "com.vlab.mvp_loader"
         minSdkVersion 16

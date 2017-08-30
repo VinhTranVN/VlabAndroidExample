@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
+import rx.functions.Action0;
+import rx.subjects.PublishSubject;
 
 /**
  * Created by Vinh.Tran on 5/20/16.
@@ -24,13 +26,49 @@ public class RxOperators {
 
     public static void main(String[] args) {
 
-        String searchText = "Hello";
+        /*String searchText = "Hello";
 
         method1(searchText);
 
         method2(searchText);
 
-        method3(searchText);
+        method3(searchText);*/
+
+        PublishSubject<String> subject = PublishSubject.create();
+        Observable<String> obs1 = subject.asObservable()
+                .doOnCompleted(() -> System.out.println("doOnCompleted"));
+
+        obs1.subscribe(str -> System.out.println("1 " + str));
+
+//        obs1.subscribe(str -> System.out.println("2 " + str));
+//
+//        obs1.subscribe(str -> System.out.println("3 " + str));
+
+        subject.onNext("text");
+    }
+
+    private static void testError(){
+        PublishSubject<String> subject = PublishSubject.create();
+        Observable<String> obs1 = subject.asObservable()
+                .doOnNext(str -> {
+                    System.out.println(">>> doOnNext aaa");
+                    throw new RuntimeException("RuntimeException");
+                })
+                .onErrorResumeNext(Observable.empty())
+                .onErrorReturn(throwable -> {
+                    System.out.println(">>> onErrorReturn " + throwable.getMessage());
+                    return "return";
+                })
+                .doOnError(str -> System.out.println(">>> doOnError " + str))
+                .doOnNext(str -> System.out.println(">>> doOnNext ccc " + str))
+                .doOnCompleted(new Action0() {
+                    @Override
+                    public void call() {
+                        System.out.println("doOnCompleted");
+                    }
+                });
+
+        obs1.subscribe(str -> System.out.println("1 " + str));
     }
 
     private static void method1(String text) {

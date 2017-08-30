@@ -85,4 +85,27 @@ public class CalendarTest {
             weekCal.add(Calendar.DAY_OF_MONTH, 1);
         }
     }
+
+    @Test
+    public void testCalendar() {
+        Calendar selectCal = Calendar.getInstance();
+        selectCal.set(Calendar.YEAR, 2017);
+        selectCal.set(Calendar.MONTH, 7);
+        selectCal.set(Calendar.DAY_OF_MONTH, 1);
+        selectCal.set(Calendar.HOUR, 0);
+        selectCal.set(Calendar.MINUTE, 0);
+        selectCal.set(Calendar.SECOND, 0);
+
+        int numberDay = convertDateToCombineDay(selectCal.get(Calendar.YEAR),
+                selectCal.get(Calendar.MONTH),
+                selectCal.get(Calendar.DAY_OF_MONTH));
+
+        System.out.println(numberDay);
+    }
+
+    public static int convertDateToCombineDay(int year, int month, int dayOfMonth) {
+        return year * 416 + month * 32 + dayOfMonth;
+    }
+
+
 }

@@ -2,6 +2,8 @@ package com.vlab.rx_java;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.functions.Action0;
@@ -25,7 +27,6 @@ public class RxOperators {
     }
 
     public static void main(String[] args) {
-
         /*String searchText = "Hello";
 
         method1(searchText);
@@ -44,31 +45,77 @@ public class RxOperators {
 //
 //        obs1.subscribe(str -> System.out.println("3 " + str));
 
-        subject.onNext("text");
+//        subject.onNext("text");
+
+        testError();
     }
 
     private static void testError(){
+
+        System.out.println(">>> testError");
+
         PublishSubject<String> subject = PublishSubject.create();
         Observable<String> obs1 = subject.asObservable()
-                .doOnNext(str -> {
-                    System.out.println(">>> doOnNext aaa");
-                    throw new RuntimeException("RuntimeException");
+//                .doOnNext(str -> {
+//                    System.out.println(">>> doOnNext aaa");
+//                    throw new RuntimeException("RuntimeException");
+//                })
+                .onErrorResumeNext(throwable -> {
+                    return Observable.error(new NullPointerException("null error"));
                 })
-                .onErrorResumeNext(Observable.empty())
-                .onErrorReturn(throwable -> {
-                    System.out.println(">>> onErrorReturn " + throwable.getMessage());
-                    return "return";
+//                .onErrorReturn(throwable -> {
+//                    System.out.println(">>> onErrorReturn " + throwable.getMessage());
+//                    return "error";
+//                })
+                .doOnError(str -> {
+                    System.out.println(">>> doOnError " + str);
                 })
-                .doOnError(str -> System.out.println(">>> doOnError " + str))
-                .doOnNext(str -> System.out.println(">>> doOnNext ccc " + str))
+                .doOnNext(str -> System.out.println(">>> doOnNext " + str))
                 .doOnCompleted(new Action0() {
                     @Override
                     public void call() {
-                        System.out.println("doOnCompleted");
+                        System.out.println(">>> doOnCompleted");
                     }
-                });
+                })
+                .doOnTerminate(() -> System.out.println(">>> doOnTerminate"))
+                .doOnUnsubscribe(() -> System.out.println(">>> doOnUnsubscribe"));
 
-        obs1.subscribe(str -> System.out.println("1 " + str));
+        obs1.subscribe(
+                str -> {
+                    // TODO throw error here for test stream will be unsubscribe
+                    if(str.equalsIgnoreCase("onNext3")){
+                        throw new RuntimeException("onNext3 throw error");
+                    }
+
+                    System.out.println("success " + str);
+                }
+                ,throwable -> {
+                    System.out.println(" onError " + throwable);
+                })
+        ;
+
+        CountDownLatch latch = new CountDownLatch(1);
+        Observable<Long> timer = Observable.interval(1, TimeUnit.SECONDS)
+                        .doOnNext(count -> {
+                            subject.onNext("onNext" + count);
+                        })
+                        .takeUntil(count -> {
+                            if(count >= 5){
+                                latch.countDown();
+                                return true;
+                            }
+                            return false;
+                        });
+
+        timer.subscribe();
+
+        System.out.println(">>> before latch.await() " + latch.getCount());
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println(">>> after latch.await() " + latch.getCount());
     }
 
     private static void method1(String text) {

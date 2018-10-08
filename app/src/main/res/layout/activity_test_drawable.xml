@@ -16,7 +16,23 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingTop="15dp"
-            android:text="Test the image ( 200px x 200px )"/>
+            android:text="Test the image 200 x 200 (px)"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="15dp"
+            android:textColor="#0f0"
+            android:text="drawable_auto"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="#ccc"
+            android:src="@drawable/house_test"/>
+
 
         <TextView
             android:layout_width="match_parent"
